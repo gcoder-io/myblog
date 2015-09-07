@@ -4,21 +4,22 @@
 通过建立桥接文件实现使用swift语法调用原oc代码
 例如：新建zaozuo-ios-Bridging-Header.h文件，导入oc需要暴露给swift的类
 
+```objective-c
+//FMDB
+#import "FMDB.h"
 
-	//FMDB
-	#import "FMDB.h"
-
-	// shareSdk
-	#import <ShareSDK/ShareSDK.h>
-	#import <ShareSDKUI/ShareSDK+SSUI.h>
-	#import <ShareSDKConnector/ShareSDKConnector.h>
-	//腾讯SDK头文件
-	#import <TencentOpenAPI/TencentOAuth.h>
-	#import <TencentOpenAPI/QQApiInterface.h>
-	//微信SDK头文件
-	#import "WXApi.h"
-	//新浪微博SDK头文件
-	#import "WeiboSDK.h"
+// shareSdk
+#import <ShareSDK/ShareSDK.h>
+#import <ShareSDKUI/ShareSDK+SSUI.h>
+#import <ShareSDKConnector/ShareSDKConnector.h>
+//腾讯SDK头文件
+#import <TencentOpenAPI/TencentOAuth.h>
+#import <TencentOpenAPI/QQApiInterface.h>
+//微信SDK头文件
+#import "WXApi.h"
+//新浪微博SDK头文件
+#import "WeiboSDK.h"
+```
 * Foundation、UiKit等系统框架保持oc调用方式
 
 #####新特性：
@@ -47,25 +48,26 @@ deployment target:7.0+无法使用CocoaPods引入swift开源库;
 * swift采用Optionals处理变量值为nil的情况，正常情况下增强了调用的安全性，对于Optionals类型如果采用!强制取值可能引发无法避免的空指针；
 例如：
 
-
-	public static func dictionaryToEntityList<T:BaseModel>(set:FMResultSet)
-	        -> Array<T>{
-	        var arr:Array<T> = []
-	        while set.next(){
-	            var entity:AnyObject = T.classForCoder().alloc()
-	            if entity is T{
-	                dictionaryToEntity(set.resultDictionary(), object: entity as! T)
-	                arr.append(entity as! T)
-	            }
-	        }
-	        return arr
-	    }
-
+```swift
+public static func dictionaryToEntityList<T:BaseModel>(set:FMResultSet)
+        -> Array<T>{
+        var arr:Array<T> = []
+        while set.next(){
+            var entity:AnyObject = T.classForCoder().alloc()
+            if entity is T{
+                dictionaryToEntity(set.resultDictionary(), object: entity as! T)
+                arr.append(entity as! T)
+            }
+        }
+        return arr
+    }
+```
 上面函数，传入的参数set是非Optionals，当采用以下方式调用时，可能引发空指针异常，而在dictionaryToEntityList函数中却无法避免此问题
 
-
-	var set:FMResultSet? = nil
-	dictionaryToEntityList(set!)
+```swift
+var set:FMResultSet? = nil
+dictionaryToEntityList(set!)
+```
 
 * 解决方案:
 将set更改为Optionals或在dictionaryToEntityList函数中传入set前做非nil校验。
