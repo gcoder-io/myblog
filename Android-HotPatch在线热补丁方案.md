@@ -219,6 +219,3 @@ public class HotPatch implements IPatch {
 ### Patch Apk安全性：
 1. 打包apk必须使用主app签名文件签名；
 2. 主app对加载的patch apk做签名和无篡改校验：
-
-
-![手机扫码快速访问](http://upload-images.jianshu.io/upload_images/711578-70dc9b6a8049b976.png?imageMogr2/auto-orient/strip|imageView2/2/w/1240)
