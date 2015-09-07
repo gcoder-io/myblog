@@ -12,7 +12,9 @@ android.database.sqlite.SQLiteDatabaseLockedException: database is locked 
 ###1. 同步锁方案：
 考虑性能，建议使用**ReadWriteLock**，ReadWriteLock可以并发读，可以大幅减少读操作造成的锁开销；
 * 在Application onCreate方法中创建全局唯一的ReadWriteLock；
-  `public static ReadWriteLock lock = new ReentrantReadWriteLock(false);`
+```java
+public static ReadWriteLock lock = new ReentrantReadWriteLock(false);
+```
 * 在DAO中调用Application的ReadWriteLock，
 * 读操作前调用lock.readLock().lock(); 加锁，执行完毕调后调用
 lock.readLock.unlock();解锁；
