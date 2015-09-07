@@ -2,53 +2,55 @@
 本示例采用fmdb框架 https://github.com/ccgus/fmdb
 
 ## SQLite多线程访问问题分析：
-    - (void) testfmdb{
-        // db path
-        NSString * cachePath = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
-        NSString * dbPath = [cachePath stringByAppendingPathComponent:@"test.sqlite"];
-        
-        // create db
-        _db = [FMDatabase databaseWithPath:dbPath];
-        
-        // open db
-        BOOL openDbResult = [_db open];
-        NSLog(@"openDbResult===%@", openDbResult ? @"YES":@"NO");
+```oc
+- (void) testfmdb{
+    // db path
+    NSString * cachePath = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
+    NSString * dbPath = [cachePath stringByAppendingPathComponent:@"test.sqlite"];
+    
+    // create db
+    _db = [FMDatabase databaseWithPath:dbPath];
+    
+    // open db
+    BOOL openDbResult = [_db open];
+    NSLog(@"openDbResult===%@", openDbResult ? @"YES":@"NO");
 
-        // create table
-        BOOL createTableResult = [_db executeUpdate:@"create table if not exists user(id integer primary key autoincrement, name text, age integer)"];
-        NSLog(@"createTableResult===%@", createTableResult ? @"YES":@"NO");
-        
-        // test multithreading
-        NSOperationQueue *myQueue = [[NSOperationQueue alloc] init];
-        [myQueue setMaxConcurrentOperationCount:10];
-        for (int i = 0; i < 100; i ++) {
-            NSBlockOperation *opBlock = [NSBlockOperation blockOperationWithBlock:^{
-                [self insert];
-                [self query];
-            }];
-            [myQueue addOperation:opBlock];
-        }
-        
+    // create table
+    BOOL createTableResult = [_db executeUpdate:@"create table if not exists user(id integer primary key autoincrement, name text, age integer)"];
+    NSLog(@"createTableResult===%@", createTableResult ? @"YES":@"NO");
+    
+    // test multithreading
+    NSOperationQueue *myQueue = [[NSOperationQueue alloc] init];
+    [myQueue setMaxConcurrentOperationCount:10];
+    for (int i = 0; i < 100; i ++) {
+        NSBlockOperation *opBlock = [NSBlockOperation blockOperationWithBlock:^{
+            [self insert];
+            [self query];
+        }];
+        [myQueue addOperation:opBlock];
     }
+    
+}
 
-    -(void) insert{
-        for (int i = 0; i < 100; i ++) {
-            NSString *name = [NSString stringWithFormat:@"name_%d",i];
-            NSString *age = [NSString stringWithFormat:@"%d",i];
-            
-            [_db executeUpdate:@"insert into user(name,age) values (?, ?)", name,age];
-        }
+-(void) insert{
+    for (int i = 0; i < 100; i ++) {
+        NSString *name = [NSString stringWithFormat:@"name_%d",i];
+        NSString *age = [NSString stringWithFormat:@"%d",i];
+        
+        [_db executeUpdate:@"insert into user(name,age) values (?, ?)", name,age];
     }
+}
 
-    -(void) query{
-        FMResultSet * set = [_db executeQuery:@"select * from user"];
-        while ([set next]) {
-            int id = [set intForColumn:@"id"];
-            NSString *name = [set stringForColumn:@"name"];
-            int age = [set intForColumn:@"age"];
-            NSLog(@"%d===%@===%d", id, name, age);
-        }
+-(void) query{
+    FMResultSet * set = [_db executeQuery:@"select * from user"];
+    while ([set next]) {
+        int id = [set intForColumn:@"id"];
+        NSString *name = [set stringForColumn:@"name"];
+        int age = [set intForColumn:@"age"];
+        NSLog(@"%d===%@===%d", id, name, age);
     }
+}
+```
 
 * 调用testfmdb方法抛出异常：The FMDatabase is currently in use.
 * ios中SQLite同Android中SQLite一样，数据库不支持多线程读写并发访问，Android底层对SQLite单个数据库连接读写操作做了同步处理，也仅能支持单数据库连接的并发访问。
