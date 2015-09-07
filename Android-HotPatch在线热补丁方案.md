@@ -187,32 +187,32 @@ private static final String SP_KEY_HOT_PATCH = "hot_patch_path";
 1. 新建Android工程，引入patchloader.jar、dexposedbridge.jar；
 2. 创建Patch修复类实现IPatch接口；
 
-		```java
-		public class HotPatch implements IPatch {
+```java
+public class HotPatch implements IPatch {
 
-		@Override
-		public void handlePatch(final PatchParam arg0) throws Throwable {    	
-	    	Class<?> cls = null;
-			try {
-				cls= arg0.context.getClassLoader()
-						.loadClass("com.zaozuo.app.MainActivity");
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-				return;
-			}     	
-	     	DexposedBridge.findAndHookMethod(cls, "bindData",
-					new XC_MethodReplacement() {
-				@Override
-				protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
-					Activity mainActivity = (Activity) param.thisObject;
-					Toast.makeText(mainActivity, "test show hotPatch.",Toast.LENGTH_LONG).show();
-					return null;                 
-				}
-			});
-		}
+	@Override
+	public void handlePatch(final PatchParam arg0) throws Throwable {    	
+		Class<?> cls = null;
+		try {
+			cls= arg0.context.getClassLoader()
+					.loadClass("com.zaozuo.app.MainActivity");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			return;
+		}     	
+	 	DexposedBridge.findAndHookMethod(cls, "bindData",
+				new XC_MethodReplacement() {
+			@Override
+			protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
+				Activity mainActivity = (Activity) param.thisObject;
+				Toast.makeText(mainActivity, "test show hotPatch.",Toast.LENGTH_LONG).show();
+				return null;                 
+			}
+		});
+	}
 
-		}
-		```
+}
+```
 	
 3. 打包patch apk，上传到服务器并通知客户端下载。
 
