@@ -16,7 +16,7 @@ android.database.sqlite.SQLiteDatabaseLockedException: database is locked 
 public static ReadWriteLock lock = new ReentrantReadWriteLock(false);
 ```
 * 在DAO中调用Application的ReadWriteLock，
-* 读操作前调用lock.readLock().lock(); 加锁，执行完毕调后调用
+* 读操作前调用```java lock.readLock().lock(); ```加锁，执行完毕调后调用
 lock.readLock.unlock();解锁；
 * 写操作调用lock.writeLock().lock(); 加锁，执行完毕后调用
 lock.writeLock().unlock(); 解锁；
