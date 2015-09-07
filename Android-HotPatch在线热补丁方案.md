@@ -10,7 +10,7 @@ https://github.com/alibaba/dexposed
 2. 客户端版本管理模块在程序入口Activity中检测是否有需要修复的patch；
 3. 下载完patch apk到程序私有目录，即/data/data/packageName/files目录，同时可在xml中保存patch apk本地存储路径、方便下载启动app时加载补丁patch。
 
-
+		```java
 		public class HotPatchManager {
 	    public static boolean canDexposed = false;
 	    private static final String SP_KEY_HOT_PATCH = "hot_patch_path";
@@ -177,6 +177,7 @@ https://github.com/alibaba/dexposed
 	    }
 
 		}
+		```
 		
 ##Patch Apk部分：
 >dexpose支持方法粒度的patch，可以实现整个方法的替换或方法前、后执行修复代码。
@@ -186,6 +187,7 @@ https://github.com/alibaba/dexposed
 1. 新建Android工程，引入patchloader.jar、dexposedbridge.jar；
 2. 创建Patch修复类实现IPatch接口；
 
+		```java
 		public class HotPatch implements IPatch {
 
 		@Override
@@ -210,6 +212,7 @@ https://github.com/alibaba/dexposed
 		}
 
 		}
+		```
 	
 3. 打包patch apk，上传到服务器并通知客户端下载。
 
