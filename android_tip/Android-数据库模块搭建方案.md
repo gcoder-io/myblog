@@ -5,7 +5,7 @@ https://github.com/greenrobot/greenDAO
 ##Android数据库存在的问题：
 1. SQLite是**数据库级别**锁，同一个数据库连接可以多线程操作，同时读、写、读写操作，SQLite底层做了同步处理；
 2. 多个数据库连接，只可以多线程读操作，不可写或读写操作，否则会抛出锁表异常
-android.database.sqlite.SQLiteDatabaseLockedException: database is locked 
+`android.database.sqlite.SQLiteDatabaseLockedException: database is locked`
 总结：多个数据库连接不能同时操作涉及到写的操作，多线程写操作必须保证一个数据库连接。
 
 ##解决方案：
@@ -16,10 +16,10 @@ android.database.sqlite.SQLiteDatabaseLockedException: database is locked 
 public static ReadWriteLock lock = new ReentrantReadWriteLock(false);
 ```
 * 在DAO中调用Application的ReadWriteLock，
-* 读操作前调用```java lock.readLock().lock(); ```加锁，执行完毕调后调用
-lock.readLock.unlock();解锁；
-* 写操作调用lock.writeLock().lock(); 加锁，执行完毕后调用
-lock.writeLock().unlock(); 解锁；
+* 读操作前调用`lock.readLock().lock();`加锁，执行完毕调后调用
+`lock.readLock.unlock();`解锁；
+* 写操作调用`lock.writeLock().lock();` 加锁，执行完毕后调用
+`lock.writeLock().unlock();` 解锁；
 * 在每次读写操作前需要获取数据库连接，用完后关闭释放资源。
 
 ```java
