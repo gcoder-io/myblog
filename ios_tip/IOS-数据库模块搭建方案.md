@@ -2,7 +2,7 @@
 本示例采用fmdb框架 https://github.com/ccgus/fmdb
 
 ## SQLite多线程访问问题分析：
-```oc
+```objective-c
 - (void) testfmdb{
     // db path
     NSString * cachePath = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
