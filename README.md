@@ -4,7 +4,6 @@
 * [Android-数据库模块搭建方案](https://github.com/ancode-cn/myblog/blob/master/android_tip/Android-%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A8%A1%E5%9D%97%E6%90%AD%E5%BB%BA%E6%96%B9%E6%A1%88.md)
 * [Android-数据库性能优化]()
 * [Android-NOSQL数据库方案]()
-* [Android-数据库性能优化]()
 * [Android-Intent安全性研究]()
 * [Android-自定义View-事件分发机制]()
 * [Android-自定义View-生命周期]()
