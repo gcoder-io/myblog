@@ -76,6 +76,7 @@
 
 ###NSUserDefault：
 > 支持的数据类型有NSString、 NSNumber、NSDate、 NSArray、NSDictionary、BOOL、NSInteger、NSFloat等系统定义的数据类型，如果要存放自定义的对象（如自定义的类对象），则必须将其转换成NSData存储。
+
 ```objective-c
 - (void) testUserDefaults{
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -120,7 +121,6 @@
 
 @end
 ```
-
 * entity实现类重写encodeWithCoder、initWithCoder函数
 实现序列化和反序列化。
 
