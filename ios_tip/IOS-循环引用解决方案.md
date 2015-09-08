@@ -1,4 +1,4 @@
-#循环引用解决方案：
+#IOS-循环引用解决方案：
 
 ###Block中循环引用问题：
 * Block调用所在对象的方法或变量时，会带来循环引用的问题，继而引发内存泄露.
@@ -26,3 +26,18 @@ class LoginViewController: UIViewController {
     }
 }
 ```
+###系统API调用需要注意的地方：
+* NSTimer：
+定时器NSTimer中保持的target是强引用的方式，必须在合适的时间调用NSTimer的invalidate方法
+在ViewController中，可在viewWillDisappear方法中调用。
+
+```objective-oc
++ (NSTimer *)timerWithTimeInterval:(NSTimeInterval)seconds
+                        target:(id)target
+                      selector:(SEL)aSelector
+                      userInfo:(id)userInfo
+                       repeats:(BOOL)repeats
+```                       
+
+
+
