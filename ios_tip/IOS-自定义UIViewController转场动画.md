@@ -1,0 +1,77 @@
+#IOS-自定义UIViewController转场动画
+
+## 一：Modal Segue：
+###页面打开动画：
+
+```swift
+class MainViewController: UIViewController, UIViewControllerTransitioningDelegate {
+
+    // 1. 让ViewController实现UIViewControllerTransitioningDelegate协议;
+    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        
+        // 2. 返回自定义的UIViewControllerAnimatedTransitioning;
+        return CustomAnimatedTransitioning()
+    }
+    
+    //3. 在Main.storyboard中配置segue的Identifier;
+    //4. prepareForSegue方法中根据Identifier决定跳转某个页面的动画.
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if "showlogin" == segue.identifier{
+            let toViewController = segue.destinationViewController as! UIViewController
+            println("打开登录页面===\(toViewController)")
+
+            toViewController.transitioningDelegate = self
+        }
+       
+    }
+}
+```
+###页面关闭动画：
+
+```swift
+// 页面关闭后动画效果
+func animationControllerForDismissedController(dismissed: UIViewController)
+        -> UIViewControllerAnimatedTransitioning? {
+    return DismissAnimatedTransitioning()
+}    
+```
+###定义动画
+
+```swift
+import Foundation
+
+/**
+自定义转场动画，必须实现UIViewControllerAnimatedTransitioning协议.
+**/
+public class CustomAnimatedTransitioning : NSObject, UIViewControllerAnimatedTransitioning{
+    
+    // 单位:second
+    public func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
+        return 1.0;
+    }
+    
+    public func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+        let fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey)!
+        let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey)!
+        let finalFrameForVC = transitionContext.finalFrameForViewController(toViewController)
+        let containerView = transitionContext.containerView()
+        let bounds = UIScreen.mainScreen().bounds
+        
+        toViewController.view.frame = CGRectOffset(finalFrameForVC, 0, -bounds.size.height)
+        containerView.addSubview(toViewController.view)
+        
+        UIView.animateWithDuration(transitionDuration(transitionContext), delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.0, options: .CurveLinear, animations: {
+
+                fromViewController.view.alpha = 0.5
+                toViewController.view.frame = finalFrameForVC
+            }, completion: {
+                finished in
+                
+                transitionContext.completeTransition(true)
+                fromViewController.view.alpha = 1.0
+        })
+        
+    }
+
+}
+```
