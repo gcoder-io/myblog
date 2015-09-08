@@ -31,12 +31,13 @@ class LoginViewController: UIViewController {
 定时器NSTimer中保持的target是强引用的方式，必须在合适的时间调用NSTimer的invalidate方法
 在ViewController中，可在viewWillDisappear方法中调用。
 
-```objective-oc
-+ (NSTimer *)timerWithTimeInterval:(NSTimeInterval)seconds
-                        target:(id)target
-                      selector:(SEL)aSelector
-                      userInfo:(id)userInfo
-                       repeats:(BOOL)repeats
+```swift
+class func scheduledTimerWithTimeInterval(
+        ti: NSTimeInterval
+        , target aTarget: AnyObject
+        , selector aSelector: Selector
+        , userInfo: AnyObject?
+        , repeats yesOrNo: Bool) -> NSTimer
 ```                       
 
 
