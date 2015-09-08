@@ -29,7 +29,8 @@ class MainViewController: UIViewController, UIViewControllerTransitioningDelegat
 ###页面关闭动画：
 
 ```swift
-// 页面关闭后动画效果
+// 1. 让ViewController实现UIViewControllerTransitioningDelegate协议;
+// 2. 页面关闭后动画效果
 func animationControllerForDismissedController(dismissed: UIViewController)
         -> UIViewControllerAnimatedTransitioning? {
     return DismissAnimatedTransitioning()
@@ -73,5 +74,33 @@ public class CustomAnimatedTransitioning : NSObject, UIViewControllerAnimatedTra
         
     }
 
+}
+```
+## UINavigationController中子ViewController转场动画
+###页面打开和关闭动画：
+
+```swift
+import UIKit
+
+// 1. 在navigationController的root view controller实现UINavigationControllerDelegate协议.
+class MainViewController: UIViewController, UINavigationControllerDelegate{
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // 2. 设置navigationController的代理
+        navigationController?.delegate = self
+    }
+    
+    // 3. 根据operation类型决定使用何种动画.
+    func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        
+        if operation == UINavigationControllerOperation.Pop{
+            // 页面关闭动画
+            return DismissAnimatedTransitioning()
+        }else{
+            // 页面打开动画
+            return CustomAnimatedTransitioning()
+        }
+    }
 }
 ```
