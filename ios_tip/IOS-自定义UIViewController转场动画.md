@@ -29,7 +29,8 @@ class MainViewController: UIViewController, UIViewControllerTransitioningDelegat
 ###页面关闭动画：
 
 ```swift
-// 页面关闭后动画效果
+// 1. 让ViewController实现UIViewControllerTransitioningDelegate协议;
+// 2. 页面关闭后动画效果
 func animationControllerForDismissedController(dismissed: UIViewController)
         -> UIViewControllerAnimatedTransitioning? {
     return DismissAnimatedTransitioning()
@@ -75,3 +76,40 @@ public class CustomAnimatedTransitioning : NSObject, UIViewControllerAnimatedTra
 
 }
 ```
+## 二：UINavigationController中子ViewController转场动画
+###页面打开和关闭动画：
+
+```swift
+import UIKit
+
+// 1. 在navigationController的root view controller实现UINavigationControllerDelegate协议.
+class MainViewController: UIViewController, UINavigationControllerDelegate{
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // 2. 设置navigationController的代理
+        navigationController?.delegate = self
+    }
+    
+    // 3. 根据operation类型决定使用何种动画.
+    func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        
+        if operation == UINavigationControllerOperation.Pop{
+            // 页面关闭动画
+            return DismissAnimatedTransitioning()
+        }else{
+            // 页面打开动画
+            return CustomAnimatedTransitioning()
+        }
+    }
+}
+```
+
+## 三：UITabBarController中子ViewController转场动画
+###页面打开和关闭动画：
+类似UINavigationController实现方式，更改代理为UITabBarControllerDelegate即可。
+
+参考：
+* [自定义ViewController切换效果与动画](https://github.com/bboyfeiyu/iOS-tech-frontier/blob/master/issue-2/%E8%87%AA%E5%AE%9A%E4%B9%89ViewController%E5%88%87%E6%8D%A2%E6%95%88%E6%9E%9C%E4%B8%8E%E5%8A%A8%E7%94%BB.md)
+
+
