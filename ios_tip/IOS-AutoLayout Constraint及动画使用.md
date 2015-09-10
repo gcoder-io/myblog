@@ -1,6 +1,8 @@
 #IOS-AutoLayout Constraint及动画使用
 
 ###对已有Constraint更新、删除: 
+* UIView的宽高约束属于UIView本身；
+* center，edge（left/top/right/bottom）等约束属于所在UIView的父View;
 
 ```swift
 @IBOutlet weak var closeBtn: UIButton!
@@ -59,7 +61,7 @@ private func testAnim(){
 }
 ```
 ###更改UIView的Constraints
-
+* 修改已有约束，会引起其它相关UIView约束同步变化
 ```swift
 private func modifyConstraints(){
     // 修改已有约束，会引起其它相关UIView约束同步变化
