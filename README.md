@@ -16,6 +16,7 @@
 * [Swift可行性分析](https://github.com/ancode-cn/myblog/blob/master/ios_tip/Swift%E5%8F%AF%E8%A1%8C%E6%80%A7%E5%88%86%E6%9E%90.md)
 * [IOS-循环引用解决方案](https://github.com/ancode-cn/myblog/blob/master/ios_tip/IOS-%E5%BE%AA%E7%8E%AF%E5%BC%95%E7%94%A8%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88.md)
 * [IOS-自定义UIViewController转场动画](https://github.com/ancode-cn/myblog/blob/master/ios_tip/IOS-%E8%87%AA%E5%AE%9A%E4%B9%89UIViewController%E8%BD%AC%E5%9C%BA%E5%8A%A8%E7%94%BB.md)
+* [IOS-AutoLayout Constraint及动画使用](https://github.com/ancode-cn/myblog/blob/master/ios_tip/IOS-AutoLayout%20Constraint%E5%8F%8A%E5%8A%A8%E7%94%BB%E4%BD%BF%E7%94%A8.md)
 * [IOS-动画]()
 * [IOS-开源库分析-SwiftEventBus]()
 
