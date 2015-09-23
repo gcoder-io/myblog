@@ -1,5 +1,17 @@
 #IOS-AutoLayout Constraint及动画使用
 
+###Content Hugging Priority 和 Content Compression Resistance Priority
+* Content Hugging Priority，阻止超过frame默认长宽约束优先级，标准值为251；
+当新添加的长宽约束优先级小于标准值251时此约束生效，使view按照frame默认长宽或小于默认长宽显示（以view实际内容为准）；
+* Content Compression Resistance Priority，阻止小于frame默认长宽约束优先级，标准值为750；
+当新添加的长宽约束优先级小于标准值750时此约束生效，使view按照frame默认长宽或大于默认长宽显示（以view实际内容为准）；
+* 注，新建的Constraint默认优先级为1000，故正常情况下不会触发以上约束；
+* 当多个平级的view的约束产生相互依赖时，例如，TableViewCell中viewA和viewB都未设置高度约束
+viewA.top = superView.top， viewA.bottom = viewB.top，viewB.bottom = superView.bottom，
+viewA高依赖viewB，viewB高度依赖viewA和superView，viewA、viewB高依赖对方，此时需要设置以上优先级来优先确定某一个view的高度
+1> 优先viewA：设置viewA Content Hugging Priority = 250, Content Compression Resistance Priority = 751
+   将会按照viewA的内容不低于viewA默认frame的高来优先确定viewA的高;
+
 ###对已有Constraint更新、删除: 
 * UIView的宽高约束属于UIView本身；
 * center，edge（left/top/right/bottom）等约束属于所在UIView的父View;
